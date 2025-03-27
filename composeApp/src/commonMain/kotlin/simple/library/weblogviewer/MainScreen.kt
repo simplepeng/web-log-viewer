@@ -20,7 +20,9 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 @Preview
-fun MainScreen() {
+fun MainScreen(
+    viewModel: MainViewModel = MainViewModel()
+) {
 
     var ip by remember { mutableStateOf("172.16.1.63") }
     var port by remember { mutableStateOf("8080") }
@@ -47,7 +49,7 @@ fun MainScreen() {
         }
         //
         Button(onClick = {
-
+            viewModel.connect(ip, port)
         }) {
             Text(
                 text = "连接"
