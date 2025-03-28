@@ -72,6 +72,13 @@ fun MainScreen(
                     )
                 }
                 Button(onClick = {
+                    viewModel.close()
+                }) {
+                    Text(
+                        text = "close"
+                    )
+                }
+                Button(onClick = {
                     viewModel.clear()
                 }) {
                     Text(
