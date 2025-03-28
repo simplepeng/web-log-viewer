@@ -11,27 +11,40 @@ import io.ktor.websocket.Frame
 import io.ktor.websocket.readText
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 
 class MainViewModel : ViewModel() {
 
-    private val _messageList = MutableStateFlow<List<String>>(emptyList())
-    val messageList = _messageList.asStateFlow()
-
-    fun connect(ip: String, port: String) {
-        val client = HttpClient(CIO) {
+    private val client by lazy {
+        HttpClient(CIO) {
             install(WebSockets) {
                 pingIntervalMillis = 1000
             }
         }
+    }
+
+    private val _messageList = MutableStateFlow<List<String>>(emptyList())
+    val messageList = _messageList.asStateFlow()
+
+    fun addMessage(message: String) {
+        _messageList.value = _messageList.value + message
+    }
+
+    fun connect(ip: String, port: String) {
         viewModelScope.launch {
             client.webSocket(method = HttpMethod.Get, host = ip, port = port.toInt(), path = "/") {
                 while (true) {
                     val message = incoming.receive() as Frame.Text
                     val text = message.readText()
                     println(text)
+                    addMessage(text)
                 }
             }
         }
+    }
+
+    fun clear() {
+        _messageList.value = emptyList()
     }
 }
