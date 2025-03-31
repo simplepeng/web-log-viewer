@@ -94,7 +94,7 @@ fun MainScreen(
             ) {
                 items(messageList) {
                     AppText(
-                        text = it,
+                        text = it.text,
                     )
                 }
             }

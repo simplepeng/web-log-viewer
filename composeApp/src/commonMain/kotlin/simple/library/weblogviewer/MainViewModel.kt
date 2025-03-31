@@ -20,10 +20,10 @@ class MainViewModel : ViewModel() {
 
     private var client: HttpClient? = null
 
-    private val _messageList = MutableStateFlow<List<String>>(emptyList())
+    private val _messageList = MutableStateFlow<List<Message>>(emptyList())
     val messageList = _messageList.asStateFlow()
 
-    fun addMessage(message: String) {
+    fun addMessage(message: Message) {
         _messageList.value = _messageList.value + message
     }
 
@@ -37,10 +37,11 @@ class MainViewModel : ViewModel() {
         viewModelScope.launch {
             client?.webSocket(method = HttpMethod.Get, host = ip, port = port.toInt(), path = "/") {
                 while (true) {
-                    val message = incoming.receive() as Frame.Text
-                    val text = message.readText()
+                    val text = (incoming.receive() as Frame.Text).readText()
                     println("text = $text")
-                    addMessage(text)
+                    Message.parse(text)?.let {
+                        addMessage(it)
+                    }
                 }
             }
         }
