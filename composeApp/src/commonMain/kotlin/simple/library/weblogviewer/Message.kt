@@ -1,5 +1,8 @@
 package simple.library.weblogviewer
 
+import kotlinx.datetime.Instant
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 
@@ -12,6 +15,13 @@ data class Message(
     val message: String,
     var text: String,
 ) {
+    val timeText: String
+        get() {
+            val instant = Instant.fromEpochMilliseconds(time)
+            val localDateTime = instant.toLocalDateTime(TimeZone.currentSystemDefault())
+            return "${localDateTime.year}-${localDateTime.month}-${localDateTime.dayOfMonth} ${localDateTime.hour}:${localDateTime.minute}:${localDateTime.second}"
+        }
+
     companion object {
         const val LEVEL_VERBOSE = 0
         const val LEVEL_DEBUG = 1

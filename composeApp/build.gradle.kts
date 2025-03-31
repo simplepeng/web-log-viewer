@@ -76,6 +76,7 @@ kotlin {
 //            implementation(libs.ktor.client.logging)
 //            implementation(libs.ktor.client.js)
             implementation(libs.kotlinx.serialization.json)
+            implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.6.2")
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
