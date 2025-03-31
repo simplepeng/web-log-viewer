@@ -67,14 +67,14 @@ fun MainScreen(
                 Button(onClick = {
                     viewModel.connect(ip, port)
                 }) {
-                    Text(
-                        text = "connect"
+                    AppText(
+                        text = "connect",
                     )
                 }
                 Button(onClick = {
                     viewModel.close()
                 }) {
-                    Text(
+                    AppText(
                         text = "close"
                     )
                 }
@@ -93,7 +93,7 @@ fun MainScreen(
                     .padding(10.dp),
             ) {
                 items(messageList) {
-                    Text(
+                    AppText(
                         text = it,
                     )
                 }

@@ -72,12 +72,19 @@ kotlin {
             implementation(libs.ktor.client.core)
             implementation(libs.ktor.client.cio)
             implementation(libs.ktor.client.websockets)
-//            implementation(libs.androidx.material3)
+//            implementation(libs.ktor.client.logging)
+//            implementation(libs.ktor.client.js)
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
             implementation(libs.kotlinx.coroutines.swing)
         }
+//        jsMain.dependencies {
+//            implementation(libs.ktor.client.js)
+//        }
+//        wasmJsMain.dependencies {
+//            implementation(libs.ktor.client.js)
+//        }
     }
 }
 
