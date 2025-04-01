@@ -20,7 +20,8 @@ data class Message(
         get() {
             val instant = Instant.fromEpochMilliseconds(time)
             val localDateTime = instant.toLocalDateTime(TimeZone.currentSystemDefault())
-            return "${localDateTime.year}-${localDateTime.monthNumber}-${localDateTime.dayOfMonth} ${localDateTime.hour}:${localDateTime.minute}:${localDateTime.second}"
+//            return "${localDateTime.year}-${localDateTime.monthNumber}-${localDateTime.dayOfMonth} ${localDateTime.hour}:${localDateTime.minute}:${localDateTime.second}"
+            return "${localDateTime.hour.toString().padStart(2, '0')}:${localDateTime.minute.toString().padStart(2, '0')}:${localDateTime.second.toString().padStart(2, '0')}"
         }
 
     val color: Color

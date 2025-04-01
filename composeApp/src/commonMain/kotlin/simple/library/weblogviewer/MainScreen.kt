@@ -92,12 +92,10 @@ fun MainScreen(
                 modifier = Modifier.fillMaxWidth()
                     .weight(1f)
                     .padding(10.dp),
+                verticalArrangement = Arrangement.spacedBy(5.dp)
             ) {
                 items(messageList) {
-                    AppText(
-                        text = it.timeText,
-                        color = it.color
-                    )
+                    MessageItem(it)
                 }
             }
         }
