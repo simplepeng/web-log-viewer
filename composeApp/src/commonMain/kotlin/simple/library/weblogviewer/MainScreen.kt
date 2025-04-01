@@ -79,7 +79,8 @@ fun MainScreen(
                     )
                 }
                 Button(onClick = {
-                    viewModel.clear()
+//                    viewModel.clear()
+                    viewModel.addTestMessage()
                 }) {
                     Text(
                         text = "clear"
@@ -94,7 +95,8 @@ fun MainScreen(
             ) {
                 items(messageList) {
                     AppText(
-                        text = it.text,
+                        text = it.timeText,
+                        color = it.color
                     )
                 }
             }

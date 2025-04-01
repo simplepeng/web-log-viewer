@@ -15,6 +15,10 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import kotlinx.datetime.Clock
+import kotlinx.datetime.Instant
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.LocalDateTime
 
 class MainViewModel : ViewModel() {
 
@@ -53,5 +57,14 @@ class MainViewModel : ViewModel() {
 
     fun clear() {
         _messageList.value = emptyList()
+    }
+
+    fun addTestMessage() {
+        val time = Clock.System.now().toEpochMilliseconds()
+        addMessage(Message(time, Message.LEVEL_VERBOSE, "tag", "message", ""))
+        addMessage(Message(time, Message.LEVEL_DEBUG, "tag", "message", ""))
+        addMessage(Message(time, Message.LEVEL_INFO, "tag", "message", ""))
+        addMessage(Message(time, Message.LEVEL_WARN, "tag", "message", ""))
+        addMessage(Message(time, Message.LEVEL_ERROR, "tag", "message", ""))
     }
 }

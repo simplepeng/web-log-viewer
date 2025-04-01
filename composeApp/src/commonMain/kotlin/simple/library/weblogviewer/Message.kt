@@ -1,5 +1,6 @@
 package simple.library.weblogviewer
 
+import androidx.compose.ui.graphics.Color
 import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
@@ -19,7 +20,19 @@ data class Message(
         get() {
             val instant = Instant.fromEpochMilliseconds(time)
             val localDateTime = instant.toLocalDateTime(TimeZone.currentSystemDefault())
-            return "${localDateTime.year}-${localDateTime.month}-${localDateTime.dayOfMonth} ${localDateTime.hour}:${localDateTime.minute}:${localDateTime.second}"
+            return "${localDateTime.year}-${localDateTime.monthNumber}-${localDateTime.dayOfMonth} ${localDateTime.hour}:${localDateTime.minute}:${localDateTime.second}"
+        }
+
+    val color: Color
+        get() {
+            return when (level) {
+                LEVEL_VERBOSE -> Color.Gray
+                LEVEL_DEBUG -> Color.Blue
+                LEVEL_INFO -> Color(127, 255, 0)
+                LEVEL_WARN -> Color(255, 193, 37)
+                LEVEL_ERROR -> Color.Red
+                else -> Color.Black
+            }
         }
 
     companion object {
