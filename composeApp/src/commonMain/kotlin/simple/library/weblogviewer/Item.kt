@@ -33,7 +33,7 @@ fun MessageItem(
                 )
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                    horizontalArrangement = Arrangement.spacedBy(15.dp)
                 ) {
                     AppText(
                         text = "tag: " + msg.tag,
@@ -43,7 +43,7 @@ fun MessageItem(
                     AppText(
                         text = msg.timeText,
                         color = msg.color,
-                        fontSize = 10.sp,
+                        fontSize = 8.sp,
                     )
                 }
             }
