@@ -10,6 +10,7 @@ import io.ktor.http.HttpMethod
 import io.ktor.util.Platform
 import io.ktor.websocket.Frame
 import io.ktor.websocket.readText
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -38,7 +39,10 @@ class MainViewModel : ViewModel() {
                 pingIntervalMillis = 1000
             }
         }
-        viewModelScope.launch {
+        val exceptionHandler = CoroutineExceptionHandler { _, exception ->
+            addMessage(Message(Clock.System.now().toEpochMilliseconds(), Message.LEVEL_ERROR, "connect", exception.message ?: ""))
+        }
+        viewModelScope.launch(exceptionHandler) {
             client?.webSocket(method = HttpMethod.Get, host = ip, port = port.toInt(), path = "/") {
                 while (true) {
                     val text = (incoming.receive() as Frame.Text).readText()
@@ -63,7 +67,7 @@ class MainViewModel : ViewModel() {
         val time = Clock.System.now().toEpochMilliseconds()
         addMessage(Message(time, Message.LEVEL_VERBOSE, "tag", "message"))
         addMessage(Message(time, Message.LEVEL_DEBUG, "tag", "message"))
-        addMessage(Message(time, Message.LEVEL_INFO, "tag", "message",))
+        addMessage(Message(time, Message.LEVEL_INFO, "tag", "message"))
         addMessage(Message(time, Message.LEVEL_WARN, "tag", "message"))
         addMessage(Message(time, Message.LEVEL_ERROR, "tag", "message"))
     }

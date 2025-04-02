@@ -40,7 +40,7 @@ fun MainScreen(
     viewModel: MainViewModel = MainViewModel()
 ) {
 
-    var ip by remember { mutableStateOf("172.16.1.63") }
+    var ip by remember { mutableStateOf("172.16.0.144") }
     var port by remember { mutableStateOf("8080") }
     var tagInput by remember { mutableStateOf("") }
 
