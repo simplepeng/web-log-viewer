@@ -14,8 +14,9 @@ data class Message(
     //
     val tag: String,
     val message: String,
-    var text: String,
 ) {
+    var text: String = ""
+
     val timeText: String
         get() {
             val instant = Instant.fromEpochMilliseconds(time)
