@@ -53,6 +53,7 @@ kotlin {
         binaries.executable()
     }
 
+    //noinspection UseTomlInstead
     sourceSets {
         val desktopMain by getting
 
@@ -77,6 +78,7 @@ kotlin {
 //            implementation(libs.ktor.client.js)
             implementation(libs.kotlinx.serialization.json)
             implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.6.2")
+            implementation("org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose:2.8.2")
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)

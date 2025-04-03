@@ -30,7 +30,7 @@ data class Message(
             return when (level) {
                 LEVEL_VERBOSE -> Color.Gray
                 LEVEL_DEBUG -> Color.Blue
-                LEVEL_INFO -> Color(100, 255, 0)
+                LEVEL_INFO -> Color(0, 255, 0)
                 LEVEL_WARN -> Color(255, 193, 37)
                 LEVEL_ERROR -> Color.Red
                 else -> Color.Black

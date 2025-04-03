@@ -2,49 +2,48 @@ package simple.library.weblogviewer
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowLayoutOverflow
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Button
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
-@Preview
 fun MainScreen(
-    viewModel: MainViewModel = MainViewModel()
+    viewModel: MainViewModel = viewModel()
+//    viewModel: MainViewModel = MainViewModel()
 ) {
 
     var ip by remember { mutableStateOf("172.16.0.144") }
     var port by remember { mutableStateOf("8080") }
     var tagInput by remember { mutableStateOf("") }
 
-    val messageList by viewModel.messageList.collectAsStateWithLifecycle()
+    val lazyListState = rememberLazyListState()
+    val messageList by viewModel.messageList.collectAsState()
+
+    LaunchedEffect(messageList){
+        if (messageList.isNotEmpty()) {
+            lazyListState.animateScrollToItem(messageList.size - 1)
+        }
+    }
 
     Scaffold(
         modifier = Modifier
@@ -61,7 +60,6 @@ fun MainScreen(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(5.dp)
             ) {
-                getPlatform().name
                 OutlinedTextField(
                     value = ip,
                     onValueChange = { ip = it },
@@ -103,8 +101,8 @@ fun MainScreen(
                     )
                 }
                 Button(onClick = {
-                    viewModel.clear()
-//                    viewModel.addTestMessage()
+//                    viewModel.clear()
+                    viewModel.addTestMessage()
                 }) {
                     Text(
                         text = "clear"
@@ -112,13 +110,13 @@ fun MainScreen(
                 }
             }
             //
-
-            //
             LazyColumn(
+                state = lazyListState,
                 modifier = Modifier.fillMaxWidth()
                     .weight(1f)
                     .padding(10.dp),
-                verticalArrangement = Arrangement.spacedBy(5.dp)
+                verticalArrangement = Arrangement.spacedBy(5.dp),
+                reverseLayout = false,
             ) {
                 items(messageList) {
                     MessageItem(it)
