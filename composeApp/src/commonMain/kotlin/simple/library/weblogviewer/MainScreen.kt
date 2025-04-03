@@ -28,10 +28,11 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun MainScreen(
-    viewModel: MainViewModel = viewModel()
+//    viewModel: MainViewModel = viewModel()
 //    viewModel: MainViewModel = MainViewModel()
 ) {
 
+    val viewModel = remember { MainViewModel() }
     var ip by remember { mutableStateOf("172.16.0.144") }
     var port by remember { mutableStateOf("8080") }
     var tagInput by remember { mutableStateOf("") }
@@ -39,7 +40,7 @@ fun MainScreen(
     val lazyListState = rememberLazyListState()
     val messageList by viewModel.messageList.collectAsState()
 
-    LaunchedEffect(messageList){
+    LaunchedEffect(messageList) {
         if (messageList.isNotEmpty()) {
             lazyListState.animateScrollToItem(messageList.size - 1)
         }
