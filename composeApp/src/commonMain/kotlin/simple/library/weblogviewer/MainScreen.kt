@@ -102,7 +102,6 @@ fun MainScreen(
                     )
                 }
                 Button(onClick = {
-//                    viewModel.clear()
                     viewModel.addTestMessage()
                 }) {
                     Text(
