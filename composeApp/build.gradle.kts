@@ -11,7 +11,7 @@ plugins {
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
     kotlin("plugin.serialization") version "2.1.0"
-    id("org.jetbrains.compose.hot-reload") version "1.0.0-alpha04"
+    id("org.jetbrains.compose.hot-reload")
 }
 
 composeCompiler {
