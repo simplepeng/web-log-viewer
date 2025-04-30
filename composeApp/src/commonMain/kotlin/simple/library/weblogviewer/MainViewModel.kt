@@ -65,10 +65,10 @@ class MainViewModel : ViewModel() {
 
     fun addTestMessage() {
         val time = Clock.System.now().toEpochMilliseconds()
-        addMessage(Message(time, Message.LEVEL_VERBOSE, "tag", "message"))
-        addMessage(Message(time, Message.LEVEL_DEBUG, "tag", "message"))
-        addMessage(Message(time, Message.LEVEL_INFO, "tag", "message"))
-        addMessage(Message(time, Message.LEVEL_WARN, "tag", "message"))
-        addMessage(Message(time, Message.LEVEL_ERROR, "tag", "message"))
+        addMessage(Message(time, Message.LEVEL_VERBOSE, "tag", "hello java"))
+        addMessage(Message(time, Message.LEVEL_DEBUG, "tag1", "hello kotlin"))
+        addMessage(Message(time, Message.LEVEL_INFO, "tag2", "hello rust"))
+        addMessage(Message(time, Message.LEVEL_WARN, "tag", "hello swift"))
+        addMessage(Message(time, Message.LEVEL_ERROR, "tag3", "hello arkTs"))
     }
 }

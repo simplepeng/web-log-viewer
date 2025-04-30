@@ -33,7 +33,7 @@ fun MainScreen(
 ) {
 
     val viewModel = remember { MainViewModel() }
-    var ip by remember { mutableStateOf("172.16.0.144") }
+    var ip by remember { mutableStateOf("172.16.0.114") }
     var port by remember { mutableStateOf("8080") }
     var tagInput by remember { mutableStateOf("") }
 
@@ -106,6 +106,13 @@ fun MainScreen(
                 }) {
                     Text(
                         text = "clear"
+                    )
+                }
+                Button(onClick = {
+                    viewModel.addTestMessage()
+                }) {
+                    Text(
+                        text = "test"
                     )
                 }
             }
