@@ -1,5 +1,9 @@
 package simple.library.weblogviewer
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import io.ktor.client.HttpClient
@@ -25,11 +29,24 @@ class MainViewModel : ViewModel() {
 
     private var client: HttpClient? = null
 
+    private val _tagInput = MutableStateFlow("")
+    var tagInput = _tagInput.asStateFlow()
+
+    fun setTagInput(value: String) {
+        _tagInput.value = value
+        filterMessage()
+    }
+
+    private val allMessage = mutableListOf<Message>()
+
     private val _messageList = MutableStateFlow<List<Message>>(emptyList())
     val messageList = _messageList.asStateFlow()
 
     fun addMessage(message: Message) {
-        _messageList.value += message
+//        _messageList.value += message
+        allMessage.add(message)
+//        _messageList.value = allMessage.filter { it.tag == tagInput.value }
+        filterMessage()
     }
 
     fun connect(ip: String, port: String) {
@@ -70,5 +87,9 @@ class MainViewModel : ViewModel() {
         addMessage(Message(time, Message.LEVEL_INFO, "tag2", "hello rust"))
         addMessage(Message(time, Message.LEVEL_WARN, "tag", "hello swift"))
         addMessage(Message(time, Message.LEVEL_ERROR, "tag3", "hello arkTs"))
+    }
+
+    fun filterMessage() {
+        _messageList.value = if (tagInput.value.isEmpty()) allMessage else allMessage.filter { it.tag == tagInput.value }
     }
 }

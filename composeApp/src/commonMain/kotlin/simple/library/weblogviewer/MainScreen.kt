@@ -11,6 +11,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -23,8 +24,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun MainScreen(
@@ -35,7 +34,12 @@ fun MainScreen(
     val viewModel = remember { MainViewModel() }
     var ip by remember { mutableStateOf("172.16.0.114") }
     var port by remember { mutableStateOf("8080") }
-    var tagInput by remember { mutableStateOf("") }
+    val tagInput by viewModel.tagInput.collectAsState()
+    var highLightInput by remember { mutableStateOf("") }
+
+//    LaunchedEffect(tagInput) {
+//        viewModel.filterMessage(tagInput)
+//    }
 
     val lazyListState = rememberLazyListState()
     val messageList by viewModel.messageList.collectAsState()
@@ -77,12 +81,26 @@ fun MainScreen(
                 )
                 OutlinedTextField(
                     value = tagInput,
-                    onValueChange = { tagInput = it },
+                    onValueChange = { viewModel.setTagInput(it) },
                     label = { Text("tag") },
                     modifier = if (getPlatform().isWeb) Modifier else Modifier.weight(0.3f),
                     singleLine = true,
                 )
             }
+            //
+            OutlinedTextField(
+                value = highLightInput,
+                onValueChange = { highLightInput = it },
+                label = { Text("highLight") },
+                placeholder = {
+                    Text(
+                        text = "多个参数用空格区分",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.secondary
+                    )
+                },
+                modifier = Modifier.fillMaxWidth(),
+            )
             //
             Row(
                 horizontalArrangement = Arrangement.spacedBy(5.dp)
@@ -102,7 +120,7 @@ fun MainScreen(
                     )
                 }
                 Button(onClick = {
-                    viewModel.addTestMessage()
+                    viewModel.clear()
                 }) {
                     Text(
                         text = "clear"
