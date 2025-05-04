@@ -7,9 +7,11 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.OutlinedCard
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
@@ -27,7 +29,9 @@ fun MessageItem(
                 verticalArrangement = Arrangement.spacedBy(0.dp),
             ) {
                 AppText(
-                    text = msg.message,
+                    text = buildAnnotatedString {
+                        append(msg.message)
+                    },
                     color = msg.color,
                     fontSize = 14.sp,
                 )

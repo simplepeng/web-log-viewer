@@ -16,6 +16,8 @@ data class Message(
     val message: String,
 ) {
     var text: String = ""
+    var highLightList: List<String> = emptyList()
+    var matchList: List<Match> = emptyList()
 
     val timeText: String
         get() {

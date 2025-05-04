@@ -35,7 +35,7 @@ fun MainScreen(
     var ip by remember { mutableStateOf("172.16.0.114") }
     var port by remember { mutableStateOf("8080") }
     val tagInput by viewModel.tagInput.collectAsState()
-    var highLightInput by remember { mutableStateOf("") }
+    val highLightInput by viewModel.highLightInput.collectAsState()
 
 //    LaunchedEffect(tagInput) {
 //        viewModel.filterMessage(tagInput)
@@ -90,7 +90,7 @@ fun MainScreen(
             //
             OutlinedTextField(
                 value = highLightInput,
-                onValueChange = { highLightInput = it },
+                onValueChange = { viewModel.setHighLightInput(it) },
                 label = { Text("highLight") },
                 placeholder = {
                     Text(

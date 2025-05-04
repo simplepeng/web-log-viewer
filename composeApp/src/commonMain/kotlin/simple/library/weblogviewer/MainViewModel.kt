@@ -29,6 +29,8 @@ class MainViewModel : ViewModel() {
 
     private var client: HttpClient? = null
 
+    //#
+
     private val _tagInput = MutableStateFlow("")
     var tagInput = _tagInput.asStateFlow()
 
@@ -36,6 +38,8 @@ class MainViewModel : ViewModel() {
         _tagInput.value = value
         filterMessage()
     }
+
+    //#
 
     private val allMessage = mutableListOf<Message>()
 
@@ -48,6 +52,8 @@ class MainViewModel : ViewModel() {
 //        _messageList.value = allMessage.filter { it.tag == tagInput.value }
         filterMessage()
     }
+
+    //#
 
     fun connect(ip: String, port: String) {
         println("connect")
@@ -91,5 +97,37 @@ class MainViewModel : ViewModel() {
 
     fun filterMessage() {
         _messageList.value = if (tagInput.value.isEmpty()) allMessage else allMessage.filter { it.tag == tagInput.value }
+    }
+
+    //#
+    private val _highLightInput = MutableStateFlow("")
+    var highLightInput = _highLightInput.asStateFlow()
+
+    fun setHighLightInput(value: String) {
+        _highLightInput.value = value
+        if (value.isNotEmpty()) {
+            _messageList.update {
+                it.map { message ->
+                    message.highLightList = value.split(" ")
+                    message.matchList = mutableListOf()
+                    if (message.highLightList.isNotEmpty()) {
+                        message.highLightList.forEach { highLight ->
+                            var lastIndex = 0
+                            var startIndex = message.message.indexOf(highLight, lastIndex)
+                            while (startIndex >= 0) {
+                                val endIndex = startIndex + highLight.length
+                                message.matchList += Match(highLight, startIndex, endIndex)
+                                lastIndex = endIndex
+                                startIndex = message.message.indexOf(highLight, lastIndex)
+                            }
+                        }
+                    }
+                    if (message.matchList.isNotEmpty()) {
+                        LogHelper.debug("matchList = ${message.matchList}")
+                    }
+                    message
+                }
+            }
+        }
     }
 }
