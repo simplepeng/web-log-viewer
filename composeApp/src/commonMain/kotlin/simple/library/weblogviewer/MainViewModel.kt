@@ -31,13 +31,13 @@ class MainViewModel : ViewModel() {
 
     //#
 
-    private val allMessage = mutableListOf<Message>()
+    private val _allMessage = MutableStateFlow<List<Message>>(mutableListOf())
 
     private val _messageList = MutableStateFlow<List<Message>>(emptyList())
     val messageList = _messageList.asStateFlow()
 
     fun addMessage(message: Message) {
-        allMessage.add(message)
+        _allMessage.value += message
         filterMessage()
     }
 
@@ -71,8 +71,8 @@ class MainViewModel : ViewModel() {
     }
 
     fun clear() {
-        allMessage.clear()
-        _messageList.value = allMessage
+        _allMessage.value = emptyList()
+        _messageList.value = _allMessage.value
     }
 
     fun addTestMessage() {
@@ -87,7 +87,7 @@ class MainViewModel : ViewModel() {
                 message = "hello world : ${name}"
             )
         )
-        LogHelper.debug("allMessage = $allMessage")
+        LogHelper.debug("allMessage = $_allMessage")
 //        addMessage(Message(time = Clock.System.now().toEpochMilliseconds(), Message.LEVEL_VERBOSE, "tag", "hello java"))
 //        addMessage(Message(time = Clock.System.now().toEpochMilliseconds(), Message.LEVEL_DEBUG, "tag1", "hello kotlin"))
 //        addMessage(Message(time = Clock.System.now().toEpochMilliseconds(), Message.LEVEL_INFO, "tag2", "hello rust"))
@@ -97,9 +97,9 @@ class MainViewModel : ViewModel() {
 
     fun filterMessage() {
         _messageList.value = if (tagInput.value.isEmpty())
-            allMessage
+            _allMessage.value
         else
-            allMessage.filter { it.tag == tagInput.value }.toMutableList()
+            _allMessage.value.filter { it.tag == tagInput.value }
     }
 
     //#
