@@ -39,6 +39,7 @@ class MainViewModel : ViewModel() {
     fun addMessage(message: Message) {
         _allMessage.value += message
         filterMessage()
+        paddingHighLightAndMatch()
     }
 
     //#
@@ -108,13 +109,20 @@ class MainViewModel : ViewModel() {
 
     fun setHighLightInput(value: String) {
         _highLightInput.value = value
+        paddingHighLightAndMatch()
+    }
+
+    private fun paddingHighLightAndMatch() {
         _messageList.update {
             it.map { message ->
-                message.highLightList = value.split(" ").filter { it.isNotEmpty() }
-                if (message.highLightList.isNotEmpty()) {
+                val newMessage = message.copy(
+                    highLightList = _highLightInput.value.split(" ").filter { it.isNotEmpty() },
+    //                    matchList = mutableListOf()
+                )
+                newMessage.matchList.clear()
+                if (newMessage.highLightList.isNotEmpty()) {
                     LogHelper.debug("highLightList = ${message.highLightList}")
-                    message.matchList.clear()
-                    message.highLightList.forEach { highLight ->
+                    newMessage.highLightList.forEach { highLight ->
                         if (highLight.isNotEmpty()) {
                             var lastIndex = 0
                             var startIndex = message.message.indexOf(highLight, lastIndex)
@@ -127,10 +135,10 @@ class MainViewModel : ViewModel() {
                         }
                     }
                 }
-                if (message.matchList.isNotEmpty()) {
+                if (newMessage.matchList.isNotEmpty()) {
                     LogHelper.debug("matchList = ${message.matchList}")
                 }
-                message
+                newMessage
             }
         }
     }

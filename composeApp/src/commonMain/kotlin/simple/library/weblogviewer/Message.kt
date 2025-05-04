@@ -1,9 +1,12 @@
 package simple.library.weblogviewer
 
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.ParagraphStyle
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.withStyle
 import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
@@ -18,13 +21,13 @@ data class Message(
     //
     val tag: String,
     val message: String,
+    var text: String = "",
+    var highLightList: List<String> = mutableListOf(),
+    var matchList: MutableList<Match> = mutableListOf(),
 ) {
     val key: String
         get() = "${time}_${tag}-${message}"
 
-    var text: String = ""
-    var highLightList: List<String> = mutableListOf()
-    var matchList: MutableList<Match> = mutableListOf()
 
     val timeText: String
         get() {
@@ -56,18 +59,29 @@ data class Message(
                     return@buildAnnotatedString
                 }
                 var lastIndex = 0
+                val gradientColors = listOf(Color.Cyan, Color.Magenta)
                 matchList.sortedBy { it.startIndex }.forEachIndexed { index, match ->
                     if (match.startIndex == 0) {
-                        withStyle(SpanStyle(color = Color.Red)) {
+                        withStyle(
+                            SpanStyle(
+                                brush = Brush.linearGradient(colors = gradientColors)
+                            )
+                        ) {
                             append(match.text)
                         }
                     } else {
                         message.substring(lastIndex, match.startIndex).let {
-                            withStyle(SpanStyle(color = color)) {
+                            withStyle(
+                                SpanStyle(color = color)
+                            ) {
                                 append(it)
                             }
                         }
-                        withStyle(SpanStyle(color = Color.Red)) {
+                        withStyle(
+                            SpanStyle(
+                                brush = Brush.linearGradient(colors = gradientColors)
+                            )
+                        ) {
                             append(match.text)
                         }
                     }
