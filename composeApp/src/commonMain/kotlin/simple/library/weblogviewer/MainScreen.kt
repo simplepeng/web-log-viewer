@@ -19,11 +19,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
 fun MainScreen(
@@ -41,8 +43,8 @@ fun MainScreen(
 //        viewModel.filterMessage(tagInput)
 //    }
 
-    val lazyListState = rememberLazyListState()
     val messageList by viewModel.messageList.collectAsState()
+    val lazyListState = rememberLazyListState()
 
     LaunchedEffect(messageList) {
         if (messageList.isNotEmpty()) {
@@ -92,6 +94,7 @@ fun MainScreen(
                 value = highLightInput,
                 onValueChange = { viewModel.setHighLightInput(it) },
                 label = { Text("highLight") },
+                singleLine = true,
                 placeholder = {
                     Text(
                         text = "多个参数用空格区分",

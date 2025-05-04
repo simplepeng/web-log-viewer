@@ -29,9 +29,7 @@ fun MessageItem(
                 verticalArrangement = Arrangement.spacedBy(0.dp),
             ) {
                 AppText(
-                    text = buildAnnotatedString {
-                        append(msg.message)
-                    },
+                    text = msg.annotatedString,
                     color = msg.color,
                     fontSize = 14.sp,
                 )
