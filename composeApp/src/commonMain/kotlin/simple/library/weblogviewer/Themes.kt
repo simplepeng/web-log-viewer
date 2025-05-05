@@ -7,6 +7,7 @@ object Themes {
 
     val highLightSpanStyle = SpanStyle(
 //        color = Color(124, 80, 157),
-        color = Color.Red
+        color = Color.Red,
+        background = Color(124, 0, 0, 100),
     )
 }
