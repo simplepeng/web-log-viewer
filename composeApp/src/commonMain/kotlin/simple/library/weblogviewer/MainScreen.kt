@@ -1,8 +1,11 @@
 package simple.library.weblogviewer
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -10,7 +13,14 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
@@ -24,6 +34,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 
@@ -34,7 +46,7 @@ fun MainScreen(
 ) {
 
     val viewModel = remember { MainViewModel() }
-    var ip by remember { mutableStateOf("172.16.0.114") }
+    var ip by remember { mutableStateOf("") }
     var port by remember { mutableStateOf("8080") }
     val tagInput by viewModel.tagInput.collectAsState()
     val highLightInput by viewModel.highLightInput.collectAsState()
@@ -58,10 +70,10 @@ fun MainScreen(
             .statusBarsPadding()
     ) { paddingValues ->
         Column(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxWidth(if (isWeb) 0.5f else 1f)
+                .fillMaxHeight()
                 .padding(paddingValues)
-                .padding(10.dp),
-            verticalArrangement = Arrangement.spacedBy(5.dp)
+                .padding(10.dp), verticalArrangement = Arrangement.spacedBy(5.dp)
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -69,10 +81,33 @@ fun MainScreen(
             ) {
                 OutlinedTextField(
                     value = ip,
-                    onValueChange = { ip = it },
+                    onValueChange = {
+                        if (it.isEmpty() || it.all { it.isDigit() || it == '.' }) {
+                            ip = it
+                        }
+                    },
                     label = { Text("ip") },
                     modifier = if (getPlatform().isWeb) Modifier else Modifier.weight(0.5f),
                     singleLine = true,
+                    keyboardOptions = KeyboardOptions.Default.copy(
+                        keyboardType = KeyboardType.Decimal
+                    ),
+                    trailingIcon = {
+                        Icon(
+                            imageVector = Icons.Default.Clear,
+                            contentDescription = "search",
+                            modifier = Modifier.clickable {
+                                ip = ""
+                            }
+                        )
+                    },
+                    placeholder = {
+                        Text(
+                            text = "手机在同一局域网的ip",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.secondary
+                        )
+                    }
                 )
                 OutlinedTextField(
                     value = port,
@@ -87,23 +122,45 @@ fun MainScreen(
                     label = { Text("tag") },
                     modifier = if (getPlatform().isWeb) Modifier else Modifier.weight(0.3f),
                     singleLine = true,
+                    trailingIcon = {
+                        Icon(
+                            imageVector = Icons.Default.Clear,
+                            contentDescription = "search",
+                            modifier = Modifier.clickable {
+                                viewModel.setTagInput("")
+                            }
+                        )
+                    }
                 )
             }
             //
-            OutlinedTextField(
-                value = highLightInput,
-                onValueChange = { viewModel.setHighLightInput(it) },
-                label = { Text("highLight") },
-                singleLine = true,
-                placeholder = {
-                    Text(
-                        text = "多个参数用空格区分",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.secondary
-                    )
-                },
-                modifier = Modifier.fillMaxWidth(),
-            )
+            Row(
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                OutlinedTextField(
+                    value = highLightInput,
+                    onValueChange = { viewModel.setHighLightInput(it) },
+                    modifier = Modifier.fillMaxWidth(),
+                    label = { Text("highLight") },
+                    singleLine = true,
+                    placeholder = {
+                        Text(
+                            text = "多个参数用空格区分",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.secondary
+                        )
+                    },
+                    trailingIcon = {
+                        Icon(
+                            imageVector = Icons.Default.Clear,
+                            contentDescription = "search",
+                            modifier = Modifier.clickable {
+                                viewModel.setHighLightInput("")
+                            }
+                        )
+                    }
+                )
+            }
             //
             Row(
                 horizontalArrangement = Arrangement.spacedBy(5.dp)

@@ -2,11 +2,13 @@ package simple.library.weblogviewer
 
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.drawscope.DrawStyle
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.ParagraphStyle
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
@@ -59,12 +61,12 @@ data class Message(
                     return@buildAnnotatedString
                 }
                 var lastIndex = 0
-                val gradientColors = listOf(Color.Cyan, Color.Magenta)
+                val gradientColors = listOf(Color.Red, Color.Magenta)
                 matchList.sortedBy { it.startIndex }.forEachIndexed { index, match ->
                     if (match.startIndex == 0) {
                         withStyle(
                             SpanStyle(
-                                brush = Brush.linearGradient(colors = gradientColors)
+                                brush = Brush.linearGradient(colors = gradientColors),
                             )
                         ) {
                             append(match.text)
@@ -79,7 +81,7 @@ data class Message(
                         }
                         withStyle(
                             SpanStyle(
-                                brush = Brush.linearGradient(colors = gradientColors)
+                                brush = Brush.linearGradient(colors = gradientColors),
                             )
                         ) {
                             append(match.text)

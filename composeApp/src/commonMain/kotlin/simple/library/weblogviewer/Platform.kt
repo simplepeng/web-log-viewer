@@ -5,3 +5,6 @@ interface Platform {
 }
 
 expect fun getPlatform(): Platform
+
+val isWeb: Boolean
+    get() = getPlatform().isWeb

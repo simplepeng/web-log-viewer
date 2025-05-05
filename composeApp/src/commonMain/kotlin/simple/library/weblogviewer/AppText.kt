@@ -8,7 +8,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.TextUnit
 import org.jetbrains.compose.resources.Font
 import web_log_viewer.composeapp.generated.resources.Res
-import web_log_viewer.composeapp.generated.resources.lan_ting_regular
+import web_log_viewer.composeapp.generated.resources.mi_sans
 
 @Composable
 fun AppText(
@@ -18,7 +18,7 @@ fun AppText(
 ) {
     Text(
         text = text,
-        fontFamily = FontFamily(Font(Res.font.lan_ting_regular)),
+        fontFamily = FontFamily(Font(Res.font.mi_sans)),
         color = color,
         fontSize = fontSize
     )
@@ -32,7 +32,7 @@ fun AppText(
 ) {
     Text(
         text = text,
-        fontFamily = FontFamily(Font(Res.font.lan_ting_regular)),
+        fontFamily = FontFamily(Font(Res.font.mi_sans)),
         color = color,
         fontSize = fontSize
     )
