@@ -92,15 +92,15 @@ fun MainScreen(
                     keyboardOptions = KeyboardOptions.Default.copy(
                         keyboardType = KeyboardType.Decimal
                     ),
-                    trailingIcon = {
-                        Icon(
-                            imageVector = Icons.Default.Clear,
-                            contentDescription = "search",
-                            modifier = Modifier.clickable {
-                                ip = ""
-                            }
-                        )
-                    },
+//                    trailingIcon = {
+//                        Icon(
+//                            imageVector = Icons.Default.Clear,
+//                            contentDescription = "search",
+//                            modifier = Modifier.clickable {
+//                                ip = ""
+//                            }
+//                        )
+//                    },
                     placeholder = {
                         Text(
                             text = "手机在同一局域网的ip",
@@ -111,10 +111,17 @@ fun MainScreen(
                 )
                 OutlinedTextField(
                     value = port,
-                    onValueChange = { port = it },
+                    onValueChange = {
+                        if (it.isEmpty() || it.all { it.isDigit() }) {
+                            port = it
+                        }
+                    },
                     label = { Text("port") },
                     modifier = if (getPlatform().isWeb) Modifier else Modifier.weight(0.2f),
                     singleLine = true,
+                    keyboardOptions = KeyboardOptions.Default.copy(
+                        keyboardType = KeyboardType.Number
+                    )
                 )
                 OutlinedTextField(
                     value = tagInput,
@@ -122,15 +129,15 @@ fun MainScreen(
                     label = { Text("tag") },
                     modifier = if (getPlatform().isWeb) Modifier else Modifier.weight(0.3f),
                     singleLine = true,
-                    trailingIcon = {
-                        Icon(
-                            imageVector = Icons.Default.Clear,
-                            contentDescription = "search",
-                            modifier = Modifier.clickable {
-                                viewModel.setTagInput("")
-                            }
-                        )
-                    }
+//                    trailingIcon = {
+//                        Icon(
+//                            imageVector = Icons.Default.Clear,
+//                            contentDescription = "search",
+//                            modifier = Modifier.clickable {
+//                                viewModel.setTagInput("")
+//                            }
+//                        )
+//                    }
                 )
             }
             //

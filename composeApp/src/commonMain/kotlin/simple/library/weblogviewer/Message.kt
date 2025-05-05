@@ -48,7 +48,7 @@ data class Message(
                 LEVEL_DEBUG -> Color.Blue
                 LEVEL_INFO -> Color(0, 255, 0)
                 LEVEL_WARN -> Color(255, 193, 37)
-                LEVEL_ERROR -> Color.Red
+                LEVEL_ERROR -> Color(200, 0, 0)
                 else -> Color.Black
             }
         }
@@ -61,13 +61,11 @@ data class Message(
                     return@buildAnnotatedString
                 }
                 var lastIndex = 0
-                val gradientColors = listOf(Color.Red, Color.Magenta)
+//                val gradientColors = listOf(Color.Red, Color.Magenta)
                 matchList.sortedBy { it.startIndex }.forEachIndexed { index, match ->
                     if (match.startIndex == 0) {
                         withStyle(
-                            SpanStyle(
-                                brush = Brush.linearGradient(colors = gradientColors),
-                            )
+                            style = Themes.highLightSpanStyle
                         ) {
                             append(match.text)
                         }
@@ -80,9 +78,7 @@ data class Message(
                             }
                         }
                         withStyle(
-                            SpanStyle(
-                                brush = Brush.linearGradient(colors = gradientColors),
-                            )
+                            style = Themes.highLightSpanStyle
                         ) {
                             append(match.text)
                         }
