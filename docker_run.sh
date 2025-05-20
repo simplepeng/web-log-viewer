@@ -1,0 +1,1 @@
+docker run -d -p 8083:80 --name web-log-viewer web-log-viewer:latest
