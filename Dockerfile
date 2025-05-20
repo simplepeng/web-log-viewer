@@ -1,5 +1,5 @@
 # 使用官方 Nginx 镜像作为基础
-FROM nginx:alpine
+FROM nginx:latest
 # 删除默认的 Nginx 网站内容
 RUN rm -rf /usr/share/nginx/html/*
 # 将构建好的 Compose Web 应用文件复制到 Nginx 托管目录
