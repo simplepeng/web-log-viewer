@@ -103,6 +103,13 @@ class MainViewModel : ViewModel() {
             _allMessage.value.filter { it.tag == tagInput.value }
     }
 
+    private val _delimiter = MutableStateFlow("/")
+    val delimiter = _delimiter.asStateFlow()
+
+    fun setDelimiter(value: String) {
+        _delimiter.value = value
+    }
+
     //#
     private val _highLightInput = MutableStateFlow("")
     var highLightInput = _highLightInput.asStateFlow()
@@ -116,8 +123,8 @@ class MainViewModel : ViewModel() {
         _messageList.update {
             it.map { message ->
                 val newMessage = message.copy(
-                    highLightList = _highLightInput.value.split(" ").filter { it.isNotEmpty() },
-    //                    matchList = mutableListOf()
+                    highLightList = _highLightInput.value.split(_delimiter.value).filter { it.isNotEmpty() },
+                    //                    matchList = mutableListOf()
                 )
                 newMessage.matchList.clear()
                 if (newMessage.highLightList.isNotEmpty()) {

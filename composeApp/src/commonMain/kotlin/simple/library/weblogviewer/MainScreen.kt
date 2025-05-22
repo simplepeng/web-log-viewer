@@ -41,6 +41,7 @@ fun MainScreen(
     var port by remember { mutableStateOf("8080") }
     val tagInput by viewModel.tagInput.collectAsState()
     val highLightInput by viewModel.highLightInput.collectAsState()
+    val delimiterInput by viewModel.delimiter.collectAsState()
 
 //    LaunchedEffect(tagInput) {
 //        viewModel.filterMessage(tagInput)
@@ -61,11 +62,12 @@ fun MainScreen(
             .statusBarsPadding()
     ) { paddingValues ->
         Column(
-            modifier = Modifier.fillMaxWidth(if (isWeb) 0.5f else 1f)
+            modifier = Modifier.fillMaxWidth(if (isWeb) 1f else 1f)
                 .fillMaxHeight()
                 .padding(paddingValues)
                 .padding(10.dp), verticalArrangement = Arrangement.spacedBy(5.dp)
         ) {
+            //
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(5.dp)
@@ -78,7 +80,8 @@ fun MainScreen(
                         }
                     },
                     label = { Text("ip") },
-                    modifier = if (getPlatform().isWeb) Modifier else Modifier.weight(0.5f),
+//                    modifier = if (getPlatform().isWeb) Modifier else Modifier.weight(0.5f),
+                    modifier = Modifier.weight(0.5f),
                     singleLine = true,
                     keyboardOptions = KeyboardOptions.Default.copy(
                         keyboardType = KeyboardType.Decimal
@@ -108,7 +111,8 @@ fun MainScreen(
                         }
                     },
                     label = { Text("port") },
-                    modifier = if (getPlatform().isWeb) Modifier else Modifier.weight(0.2f),
+//                    modifier = if (getPlatform().isWeb) Modifier else Modifier.weight(0.2f),
+                    modifier = Modifier.weight(0.3f),
                     singleLine = true,
                     keyboardOptions = KeyboardOptions.Default.copy(
                         keyboardType = KeyboardType.Number
@@ -118,7 +122,8 @@ fun MainScreen(
                     value = tagInput,
                     onValueChange = { viewModel.setTagInput(it) },
                     label = { Text("tag") },
-                    modifier = if (getPlatform().isWeb) Modifier else Modifier.weight(0.3f),
+//                    modifier = if (getPlatform().isWeb) Modifier else Modifier.weight(0.3f),
+                    modifier = Modifier.weight(0.2f),
                     singleLine = true,
 //                    trailingIcon = {
 //                        Icon(
@@ -133,17 +138,18 @@ fun MainScreen(
             }
             //
             Row(
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier,
+                horizontalArrangement = Arrangement.spacedBy(5.dp)
             ) {
                 OutlinedTextField(
                     value = highLightInput,
                     onValueChange = { viewModel.setHighLightInput(it) },
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier.weight(0.8f),
                     label = { Text("highLight") },
-                    singleLine = true,
+                    singleLine = false,
                     placeholder = {
                         Text(
-                            text = "多个参数用空格区分",
+                            text = "多个参数用后面的分割符区分",
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.secondary
                         )
@@ -157,6 +163,12 @@ fun MainScreen(
 //                            }
 //                        )
 //                    }
+                )
+                OutlinedTextField(
+                    value = delimiterInput,
+                    onValueChange = viewModel::setDelimiter,
+                    modifier = Modifier.weight(0.2f),
+                    label = { Text("delimiter") },
                 )
             }
             //
