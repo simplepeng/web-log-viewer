@@ -187,13 +187,13 @@ fun MainScreen(
                         text = "connect",
                     )
                 }
-                Button(onClick = {
-                    viewModel.close()
-                }) {
-                    AppText(
-                        text = "close"
-                    )
-                }
+//                Button(onClick = {
+//                    viewModel.close()
+//                }) {
+//                    AppText(
+//                        text = "close"
+//                    )
+//                }
                 Button(onClick = {
                     viewModel.clear()
                 }) {

@@ -105,7 +105,7 @@ class MainViewModel : ViewModel() {
                 isConnected = true
                 while (true) {
                     val text = (incoming.receive() as Frame.Text).readText()
-//                    println("text = $text")
+                    println("text = $text")
                     Message.parse(text)?.let {
                         addMessage(it)
                     }
@@ -118,6 +118,7 @@ class MainViewModel : ViewModel() {
     fun close() {
         client?.close()
         client = null
+        isConnected = false
         addErrorTextMessage("连接已断开")
     }
 

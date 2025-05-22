@@ -25,7 +25,7 @@ fun MessageItem(
         Box() {
             Column(
                 modifier = Modifier.fillMaxWidth()
-                    .padding(10.dp),
+                    .padding(horizontal = 10.dp, vertical = 5.dp),
                 verticalArrangement = Arrangement.spacedBy(0.dp),
             ) {
                 AppText(
