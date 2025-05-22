@@ -112,7 +112,7 @@ fun MainScreen(
                     },
                     label = { Text("port") },
 //                    modifier = if (getPlatform().isWeb) Modifier else Modifier.weight(0.2f),
-                    modifier = Modifier.weight(0.3f),
+                    modifier = Modifier.weight(0.25f),
                     singleLine = true,
                     keyboardOptions = KeyboardOptions.Default.copy(
                         keyboardType = KeyboardType.Number
@@ -123,7 +123,7 @@ fun MainScreen(
                     onValueChange = { viewModel.setTagInput(it) },
                     label = { Text("tag") },
 //                    modifier = if (getPlatform().isWeb) Modifier else Modifier.weight(0.3f),
-                    modifier = Modifier.weight(0.2f),
+                    modifier = Modifier.weight(0.25f),
                     singleLine = true,
 //                    trailingIcon = {
 //                        Icon(
@@ -144,7 +144,7 @@ fun MainScreen(
                 OutlinedTextField(
                     value = highLightInput,
                     onValueChange = { viewModel.setHighLightInput(it) },
-                    modifier = Modifier.weight(0.8f),
+                    modifier = Modifier.weight(0.75f),
                     label = { Text("highLight") },
                     singleLine = false,
                     placeholder = {
@@ -167,8 +167,13 @@ fun MainScreen(
                 OutlinedTextField(
                     value = delimiterInput,
                     onValueChange = viewModel::setDelimiter,
-                    modifier = Modifier.weight(0.2f),
-                    label = { Text("delimiter") },
+                    modifier = Modifier.weight(0.25f),
+                    label = {
+                        Text(
+                            text = "delimiter",
+                            maxLines = 1
+                        )
+                    },
                 )
             }
             //
