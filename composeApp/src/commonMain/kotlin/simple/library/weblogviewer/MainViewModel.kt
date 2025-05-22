@@ -14,10 +14,14 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
+import kotlin.concurrent.atomics.AtomicBoolean
+import kotlin.concurrent.atomics.ExperimentalAtomicApi
 
 class MainViewModel : ViewModel() {
 
     private var client: HttpClient? = null
+
+    private var isConnected = false
 
     //#
 
@@ -42,33 +46,79 @@ class MainViewModel : ViewModel() {
         paddingHighLightAndMatch()
     }
 
+    fun addTextMessage(
+        message: String,
+        level: Int = Message.LEVEL_VERBOSE,
+        tag: String = "web-log",
+    ) {
+        addMessage(
+            Message(
+                time = Clock.System.now().toEpochMilliseconds(),
+                level = level,
+                tag = tag,
+                message = message,
+            )
+        )
+    }
+
+    fun addErrorTextMessage(
+        message: String,
+        tag: String = "web-log",
+    ) {
+        addTextMessage(
+            message = message,
+            tag = tag,
+            level = Message.LEVEL_ERROR,
+        )
+    }
+
     //#
 
     fun connect(ip: String, port: String) {
-        println("connect")
+//        println("connect")
+        if (ip.isEmpty() || port.isEmpty()) {
+            addTextMessage(
+                level = Message.LEVEL_ERROR,
+                message = "ip或port不能为空"
+            )
+            return
+        }
+
+        if (client != null && isConnected) {
+            addTextMessage("WebSocket连接已建立")
+            return
+        }
         client = HttpClient() {
             install(WebSockets) {
                 pingIntervalMillis = 1000
             }
         }
         val exceptionHandler = CoroutineExceptionHandler { _, exception ->
-            addMessage(Message(Clock.System.now().toEpochMilliseconds(), Message.LEVEL_ERROR, "connect", exception.message ?: ""))
+            addErrorTextMessage(
+                message = "WebSocket连接失败 -- ${exception.message}"
+            )
+            isConnected = false
         }
         viewModelScope.launch(exceptionHandler) {
             client?.webSocket(method = HttpMethod.Get, host = ip, port = port.toInt(), path = "/") {
+                addTextMessage(message = "WebSocket连接成功", level = Message.LEVEL_DEBUG)
+                isConnected = true
                 while (true) {
                     val text = (incoming.receive() as Frame.Text).readText()
-                    println("text = $text")
+//                    println("text = $text")
                     Message.parse(text)?.let {
                         addMessage(it)
                     }
                 }
+                isConnected = false
             }
         }
     }
 
     fun close() {
         client?.close()
+        client = null
+        addErrorTextMessage("连接已断开")
     }
 
     fun clear() {

@@ -201,13 +201,13 @@ fun MainScreen(
                         text = "clear"
                     )
                 }
-                Button(onClick = {
-                    viewModel.addTestMessage()
-                }) {
-                    Text(
-                        text = "test"
-                    )
-                }
+//                Button(onClick = {
+//                    viewModel.addTestMessage()
+//                }) {
+//                    Text(
+//                        text = "test"
+//                    )
+//                }
             }
             //
             LazyColumn(
