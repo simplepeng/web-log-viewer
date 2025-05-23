@@ -159,6 +159,7 @@ class MainViewModel : ViewModel() {
 
     fun setDelimiter(value: String) {
         _delimiter.value = value
+        paddingHighLightAndMatch()
     }
 
     //#
