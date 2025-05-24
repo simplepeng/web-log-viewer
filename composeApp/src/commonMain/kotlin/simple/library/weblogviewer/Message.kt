@@ -61,7 +61,6 @@ data class Message(
                     return@buildAnnotatedString
                 }
                 var lastIndex = 0
-//                val gradientColors = listOf(Color.Red, Color.Magenta)
                 matchList.sortedBy { it.startIndex }.forEachIndexed { index, match ->
                     if (match.startIndex == 0) {
                         withStyle(
@@ -70,12 +69,17 @@ data class Message(
                             append(match.text)
                         }
                     } else {
-                        message.substring(lastIndex, match.startIndex).let {
-                            withStyle(
-                                SpanStyle(color = color)
-                            ) {
-                                append(it)
+                        runCatching {
+                            message.substring(lastIndex, match.startIndex).let {
+                                withStyle(
+                                    SpanStyle(color = color)
+                                ) {
+                                    append(it)
+                                }
                             }
+                        }.onFailure {
+                            it.printStackTrace()
+                            LogHelper.debug("lastIndex = $lastIndex, start = ${match.startIndex}, ${match.text}")
                         }
                         withStyle(
                             style = Themes.highLightSpanStyle
