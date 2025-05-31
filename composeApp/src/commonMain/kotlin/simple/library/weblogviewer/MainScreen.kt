@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -29,6 +30,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import org.jetbrains.compose.resources.imageResource
+import org.jetbrains.compose.resources.painterResource
+import web_log_viewer.composeapp.generated.resources.Res
+import web_log_viewer.composeapp.generated.resources.ic_clear
 
 @Composable
 fun MainScreen(
@@ -86,15 +91,6 @@ fun MainScreen(
                     keyboardOptions = KeyboardOptions.Default.copy(
                         keyboardType = KeyboardType.Decimal
                     ),
-//                    trailingIcon = {
-//                        Icon(
-//                            imageVector = Icons.Default.Clear,
-//                            contentDescription = "search",
-//                            modifier = Modifier.clickable {
-//                                ip = ""
-//                            }
-//                        )
-//                    },
                     placeholder = {
                         Text(
                             text = "手机在同一局域网的ip",
@@ -154,15 +150,15 @@ fun MainScreen(
                             color = MaterialTheme.colorScheme.secondary
                         )
                     },
-//                    trailingIcon = {
-//                        Icon(
-//                            imageVector = Icon,
-//                            contentDescription = "search",
-//                            modifier = Modifier.clickable {
-//                                viewModel.setHighLightInput("")
-//                            }
-//                        )
-//                    }
+                    trailingIcon = {
+                        Icon(
+                            painter = painterResource(Res.drawable.ic_clear),
+                            contentDescription = "clear",
+                            modifier = Modifier.size(22.dp).clickable {
+                                viewModel.setHighLightInput("")
+                            }
+                        )
+                    },
                 )
                 OutlinedTextField(
                     value = delimiterInput,
