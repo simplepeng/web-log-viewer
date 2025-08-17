@@ -104,11 +104,32 @@ class MainViewModel : ViewModel() {
                 addTextMessage(message = "WebSocket连接成功", level = Message.LEVEL_DEBUG)
                 isConnected = true
                 while (true) {
-                    val text = (incoming.receive() as Frame.Text).readText()
-                    println("text = $text")
-                    Message.parse(text)?.let {
-                        addMessage(it)
+                    for (frame in incoming) {
+                        when (frame) {
+                            is Frame.Text -> {
+                                val text = frame.readText()
+                                println("收到消息: ${text}")
+                                Message.parse(text)?.let {
+                                    addMessage(it)
+                                }
+                            }
+
+                            is Frame.Ping -> {
+                                println("收到服务器 ping")
+                            }
+
+                            is Frame.Pong -> {
+                                println("收到服务器 pong")
+                            }
+
+                            else -> {}
+                        }
                     }
+//                    val text = (incoming.receive() as Frame.Text).readText()
+//                    println("text = $text")
+//                    Message.parse(text)?.let {
+//                        addMessage(it)
+//                    }
                 }
                 isConnected = false
             }

@@ -39,18 +39,22 @@ import web_log_viewer.composeapp.generated.resources.ic_clear
 fun MainScreen(
 //    viewModel: MainViewModel = viewModel()
 //    viewModel: MainViewModel = MainViewModel()
+    hostName: String = "",
+    port: String = "",
 ) {
 
     val viewModel = remember { MainViewModel() }
-    var ip by remember { mutableStateOf("") }
-    var port by remember { mutableStateOf("8080") }
+    var ip by remember { mutableStateOf(hostName) }
+    var port by remember { mutableStateOf(port) }
     val tagInput by viewModel.tagInput.collectAsState()
     val highLightInput by viewModel.highLightInput.collectAsState()
     val delimiterInput by viewModel.delimiter.collectAsState()
 
-//    LaunchedEffect(tagInput) {
-//        viewModel.filterMessage(tagInput)
-//    }
+    LaunchedEffect(hostName, port) {
+        if (hostName.isNotEmpty() && port.isNotEmpty()) {
+            viewModel.connect(hostName, port)
+        }
+    }
 
     val messageList by viewModel.messageList.collectAsState()
     val lazyListState = rememberLazyListState()
@@ -70,7 +74,8 @@ fun MainScreen(
             modifier = Modifier.fillMaxWidth(if (isWeb) 1f else 1f)
                 .fillMaxHeight()
                 .padding(paddingValues)
-                .padding(10.dp), verticalArrangement = Arrangement.spacedBy(5.dp)
+                .padding(10.dp),
+            verticalArrangement = Arrangement.spacedBy(5.dp)
         ) {
             //
             Row(

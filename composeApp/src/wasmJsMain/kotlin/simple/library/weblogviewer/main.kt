@@ -6,7 +6,15 @@ import kotlinx.browser.document
 
 @OptIn(ExperimentalComposeUiApi::class)
 fun main() {
-    ComposeViewport(document.body!!) {
-        App()
-    }
+   ComposeViewport(document.body!!) {
+      val hostName = document.location?.hostname.orEmpty()
+      val port = document.location?.port.orEmpty()
+      val search = document.location?.search.orEmpty()
+      println("$hostName:$port$search")
+
+      App(
+         hostName = hostName,
+         port = port,
+      )
+   }
 }
